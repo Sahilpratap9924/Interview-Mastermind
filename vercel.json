@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/assets/(.*)",
-      "dest": "/dist/client/assets/$1"
+      "dest": "/assets/$1"
     },
     {
       "src": "/(.*)",
