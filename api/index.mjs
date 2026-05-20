@@ -1,12 +1,15 @@
 import { fileURLToPath } from "node:url";
 import path from "node:path";
+import { pathToFileURL } from "node:url";
 
 let serverEntry;
 
 async function getServerEntry() {
   if (!serverEntry) {
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    serverEntry = await import(path.join(__dirname, "..", "dist", "server", "index.js"));
+    const distServerPath = path.resolve(__dirname, "..", "dist", "server", "index.js");
+    const distServerUrl = pathToFileURL(distServerPath).href;
+    serverEntry = await import(distServerUrl);
   }
   return serverEntry;
 }
