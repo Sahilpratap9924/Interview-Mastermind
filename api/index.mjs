@@ -1,3 +1,4 @@
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
@@ -6,6 +7,10 @@ let serverEntry;
 
 async function getServerEntry() {
   if (!serverEntry) {
+    if (typeof globalThis.require === "undefined") {
+      globalThis.require = createRequire(import.meta.url);
+    }
+
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
     const functionServerPath = path.resolve(__dirname, "server", "index.js");
     const distServerUrl = pathToFileURL(functionServerPath).href;
