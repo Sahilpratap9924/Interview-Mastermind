@@ -38,6 +38,7 @@ function toWebRequest(req) {
     method: req.method,
     headers,
     body,
+    duplex: body ? "half" : undefined,
   });
 }
 
