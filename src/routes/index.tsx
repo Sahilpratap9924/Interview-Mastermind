@@ -46,7 +46,7 @@ function Landing() {
             </div>
           </div>
         </section>
-        <section className="mx-auto max-w-6xl px-6 pb-24">
+        <section className="mx-auto max-w-screen-2xl px-6 pb-24">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {features.map((f) => (
               <div key={f.title} className="rounded-xl border border-border bg-card p-6">

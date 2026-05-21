@@ -44,7 +44,7 @@ function Dashboard() {
   return (
     <div className="min-h-screen">
       <Header authed />
-      <main className="mx-auto max-w-6xl px-6 py-10">
+      <main className="mx-auto max-w-screen-2xl px-6 py-10">
         <h1 className="text-3xl font-bold text-foreground">New mock interview</h1>
         <p className="mt-1 text-muted-foreground">Pick a topic, set the difficulty, and go.</p>
 

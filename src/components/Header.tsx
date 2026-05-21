@@ -18,7 +18,7 @@ export function Header({ authed }: { authed: boolean }) {
   const initials = user?.name ? user.name.split(" ").map(s => s[0]).slice(0,2).join("") : (user?.email ? user.email[0].toUpperCase() : "?");
   return (
     <header className="border-b border-border bg-background/80 backdrop-blur">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
+      <div className="mx-auto flex max-w-screen-2xl items-center justify-between px-6 py-4">
         <Link to="/" className="flex items-center gap-2 text-lg font-bold text-foreground">
           <Brain className="text-primary" size={22} />
           <span>InterviewAI</span>

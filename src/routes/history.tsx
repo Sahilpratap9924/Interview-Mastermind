@@ -37,7 +37,7 @@ function HistoryPage() {
   return (
     <div className="min-h-screen">
       <Header authed />
-      <main className="mx-auto max-w-6xl px-6 py-10">
+      <main className="mx-auto max-w-screen-2xl px-6 py-10">
         <h1 className="text-3xl font-bold text-foreground">Your history</h1>
         <p className="mt-1 text-muted-foreground">Track your performance over time.</p>
 
