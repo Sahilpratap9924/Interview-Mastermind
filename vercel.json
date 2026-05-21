@@ -18,8 +18,10 @@
       "src": "/assets/(.*)",
       "dest": "/assets/$1"
     },
-    {
-      "src": "/(.*)",
+    {      "src": "^/_serverFn/(.*)",
+      "dest": "/api/index.mjs"
+    },
+    {      "src": "/(.*)",
       "dest": "/api/index.mjs"
     }
   ]
