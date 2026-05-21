@@ -7,8 +7,8 @@ let serverEntry;
 async function getServerEntry() {
   if (!serverEntry) {
     const __dirname = path.dirname(fileURLToPath(import.meta.url));
-    const distServerPath = path.resolve(__dirname, "..", "dist", "server", "index.js");
-    const distServerUrl = pathToFileURL(distServerPath).href;
+    const functionServerPath = path.resolve(__dirname, "server", "index.js");
+    const distServerUrl = pathToFileURL(functionServerPath).href;
     serverEntry = await import(distServerUrl);
   }
   return serverEntry;
