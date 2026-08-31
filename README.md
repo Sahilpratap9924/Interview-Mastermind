@@ -44,7 +44,7 @@ This project expects the following server-side environment variables (configure 
 - `MONGODB_URI` — MongoDB connection URI
 - `MONGODB_DB_NAME` — Database name
 - `JWT_SECRET` — Secret used to sign JWTs
-- `GEMINI_API_KEY` — API key for Gemini calls (used server-side)
+- `GEMINI_API_KEY` — API key for Gemini calls (used server-side); the app currently targets `gemini-3.6-flash`
 
 Note: The code contains server-only modules (MongoDB client, JWT utilities, Gemini client). When deploying to Vercel as a static build, these modules will not run in the browser — ensure any server-only operations are executed in serverless functions or a separate server runtime and that env vars are set accordingly.
 

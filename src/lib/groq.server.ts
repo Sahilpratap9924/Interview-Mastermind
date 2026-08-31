@@ -1,6 +1,6 @@
 // Server-only Gemini client. Never import from client code.
-const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
-const DEFAULT_MODEL = "gemini-2.5-flash";
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent";
+const DEFAULT_MODEL = "gemini-3.6-flash";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
