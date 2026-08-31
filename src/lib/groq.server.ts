@@ -1,35 +1,59 @@
-// Server-only Groq client. Never import from client code.
-const GROQ_URL = "https://api.groq.com/openai/v1/chat/completions";
-const DEFAULT_MODEL = "llama-3.3-70b-versatile";
+// Server-only Gemini client. Never import from client code.
+const GEMINI_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent";
+const DEFAULT_MODEL = "gemini-2.5-flash";
 
 export type ChatMessage = { role: "system" | "user" | "assistant"; content: string };
 
 export async function groqChat(messages: ChatMessage[], opts?: { model?: string; jsonMode?: boolean; temperature?: number }) {
-  const apiKey = process.env.GROQ_API_KEY;
-  if (!apiKey) throw new Error("GROQ_API_KEY is not configured. Add it in Cloud secrets.");
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) throw new Error("GEMINI_API_KEY is not configured. Add it in Cloud secrets.");
+
+  const systemInstruction = messages.find((message) => message.role === "system")?.content;
+  const contents = messages
+    .filter((message) => message.role !== "system")
+    .map((message) => ({
+      role: message.role === "assistant" ? "model" : "user",
+      parts: [{ text: message.content }],
+    }));
 
   const body: Record<string, unknown> = {
-    model: opts?.model ?? DEFAULT_MODEL,
-    messages,
-    temperature: opts?.temperature ?? 0.7,
-  };
-  if (opts?.jsonMode) body.response_format = { type: "json_object" };
-
-  const res = await fetch(GROQ_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
+    contents,
+    generationConfig: {
+      temperature: opts?.temperature ?? 0.7,
+      ...(opts?.jsonMode ? { responseMimeType: "application/json" } : {}),
     },
+    ...(systemInstruction ? { systemInstruction: { parts: [{ text: systemInstruction }] } } : {}),
+  };
+
+  if (opts?.model && opts.model !== DEFAULT_MODEL) {
+    body.model = opts.model;
+  }
+
+  const res = await fetch(`${GEMINI_URL}?key=${encodeURIComponent(apiKey)}`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(body),
   });
 
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new Error(`Groq API ${res.status}: ${text || res.statusText}`);
+    throw new Error(`Gemini API ${res.status}: ${text || res.statusText}`);
   }
-  const data = await res.json() as { choices?: { message?: { content?: string } }[] };
-  const content = data.choices?.[0]?.message?.content;
-  if (!content) throw new Error("Empty response from Groq");
+
+  const data = await res.json() as {
+    candidates?: {
+      content?: {
+        parts?: { text?: string }[];
+      };
+    }[];
+  };
+
+  const content = data.candidates
+    ?.flatMap((candidate) => candidate.content?.parts ?? [])
+    .map((part) => part.text ?? "")
+    .join("")
+    .trim();
+
+  if (!content) throw new Error("Empty response from Gemini");
   return content;
 }
